@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Circuit – News Centre</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+@font-face {
+    font-family: "Bellfort Rough";
+    src: url("fonts/BellfortRoughDemo.otf") format("opentype");
+}
+@font-face {
+    font-family: "Abolition";
+    src: url("fonts/Abolition.otf") format("opentype");
+}
+:root{
+    --main-font: "Rajdhani", Arial, Helvetica, sans-serif;
+    --headline-font: "Orbitron", sans-serif;
+    --logo:url("https://iili.io/CHGreKQ.png");
+    --news1:url("https://iili.io/CHMFnsf.jpg");
+    --news2:url("https://www.gamecircuit.co.uk/uploads/1/5/2/9/152994747/bo222_orig.jpg");
+    --news3:url("https://iili.io/CHXHDgV.jpg");
+    --news4:url("https://iili.io/CHWZBJs.jpg");
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+    background:#111;
+    font-family:var(--main-font);
+    color:white;
+}
+.page{
+    width:1520px;
+    max-width:100%;
+    margin:auto;
+    background:black;
+    border-left:1px solid #666;
+    border-right:1px solid #666;
+    box-shadow:0 0 30px rgba(0,0,0,.9);
+}
+.top{
+    height:160px;
+    display:flex;
+    align-items:center;
+    padding:0 24px 0 18px;
+    background: linear-gradient(90deg, #000 0%, #000 55%, #6b0000 80%, #9c0000 100%);
+    position: relative;
+}
+.logoWrap{
+    display:flex;
+    align-items:center;
+    gap:35px;
+}
+.logoImage{
+    width:300px;
+    height:300px;
+    background-image:var(--logo);
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size:contain;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.95));
+    margin-top:10px;
+}
+.title{
+    font-family: var(--headline-font);
+    font-size: 34px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color:#fff;
+    text-shadow: 2px 2px 0 #000;
+}
+/* USER BAR */
+.userInfo{
+    position:absolute;
+    right:25px;
+    top:0;
+}
+.userBar{
+    background: linear-gradient(#1a1a1a, #0a0a0a);
+    border: 2px solid #444;
+    border-top: 4px solid #9c0000;
+    border-radius: 4px;
+    padding: 8px 14px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-width:280px;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.7), 0 4px 12px rgba(0,0,0,0.8);
+}
+.profilePic{
+    width:48px;
+    height:48px;
+    border:2px solid #00ccff;
+    border-radius:4px;
+    background-size:cover;
+    background-position:center;
+    box-shadow:0 0 8px rgba(0, 204, 255, 0.6);
+}
+.userDetails{
+    line-height:1.3;
+}
+.user-bar-username{
+    color:#00ffcc !important;
+    font-weight:bold !important;
+    font-size:15.5px !important;
+    text-shadow:0 0 4px rgba(0, 255, 204, 0.5) !important;
+}
+.userLinks{
+    font-size:13px;
+    margin-top:2px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+.userLinks a{
+    color:#ffd700;
+    text-decoration:none;
+    transition:all 0.2s ease;
+}
+.userLinks a:hover{
+    transform:scale(1.08);
+    color:#ffea80;
+}
+.separator{
+    color:#777;
+}
+.userIcons{
+    display:flex;
+    gap:6px;
+    margin-left:auto;
+}
+.userIcons img{
+    width:22px;
+    height:22px;
+}
+/* User Search Results */
+#userSearchResults {
+    margin-top: 8px;
+    display: none;
+    background: #1a1a1a;
+    border: 2px solid #440000;
+    border-radius: 6px;
+    padding: 8px;
+    max-height: 280px;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.8);
+}
+.userResult {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    background: #222;
+    margin-bottom: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 14px;
+}
+.userResult:hover { background: #9c0000; }
+.userResult .profilePic {
+    width: 36px;
+    height: 36px;
+    border-radius: 4px;
+    background-size: cover;
+    border: 2px solid #00ccff;
+    flex-shrink: 0;
+}
+.userResultInfo .username {
+    color: #00ffcc;
+    font-weight: bold;
+    font-size: 14.5px;
+}
+.userResultInfo small {
+    color: #aaa;
+    font-size: 12px;
+    display: block;
+}
+/* MODAL */
+.modal{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.85);
+    z-index:1000;
+    align-items:center;
+    justify-content:center;
+}
+.modal-content{
+    background: linear-gradient(#1a1a1a, #0a0a0a);
+    border:3px solid #9c0000;
+    border-radius:8px;
+    width:620px;
+    max-height:85vh;
+    overflow-y:auto;
+    padding:30px;
+    box-shadow:0 0 30px rgba(156, 0, 0, 0.6);
+}
+.more-games-toggle {
+    height:34px;
+    display:flex;
+    align-items:center;
+    padding-left:20px;
+    font-size:13px;
+    background:linear-gradient(#555,#333);
+    border-bottom:1px solid #444;
+    cursor:pointer;
+    font-family:"Rajdhani";
+    color:#ffd700;
+}
+.more-games-toggle:hover { background:linear-gradient(#9c0000,#6b0000); }
+.more-games-content {
+    display: none;
+}
+.sidebar{
+    padding-top:52px;
+    width:200px;
+}
+.search{
+    display:flex;
+    margin-bottom:12px;
+    position: relative;
+    z-index: 10;
+}
+.search input{
+    width:130px;
+    height:30px;
+    border:none;
+    padding-left:8px;
+    background:#000;
+    color:white;
+    border:1px solid #444;
+}
+.search button{
+    width:44px;
+    background:#222;
+    color:white;
+    border:none;
+    font-weight:bold;
+    cursor:pointer;
+}
+.section{
+    height:30px;
+    display:flex;
+    align-items:center;
+    padding-left:14px;
+    font-size:13px;
+    font-weight:bold;
+    text-transform:uppercase;
+    background:black;
+    border-top:1px solid #777;
+    border-bottom:1px solid #222;
+}
+.item{
+    height:34px;
+    display:flex;
+    align-items:center;
+    padding-left:20px;
+    font-size:13px;
+    background: linear-gradient(#8b8b8b, #666);
+    border-bottom:1px solid #444;
+    cursor:pointer;
+}
+.item:hover{
+    background: linear-gradient(#c00, #800);
+}
+.activePage{
+    background:linear-gradient(#9c0000,#6b0000) !important;
+    border-left:4px solid #ff4444;
+    font-weight:bold;
+}
+.sidebar a{
+    color:white;
+    text-decoration:none;
+}
+.main{
+    display:flex;
+    gap:14px;
+    padding:14px;
+}
+.content{
+    flex:1;
+}
+.contentPanel{
+    background: linear-gradient(to bottom, #111 0%, #111 65%, #4a0000 100%);
+    padding:12px;
+}
+.newsTitle{
+    font-family: Tahoma, Verdana, Arial, sans-serif;
+    font-size:22px;
+    font-weight:bold;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    text-align:left;
+    margin-bottom:0;
+    color:#fff;
+    text-shadow:1px 1px 0 #000;
+    background: linear-gradient(to bottom, #9c0000, #6b0000);
+    border:2px solid #cc0000;
+    border-bottom:2px solid #400;
+    padding:8px 12px;
+}
+.newsSubBar{
+    background:#1a1a1a;
+    border:1px solid #444;
+    border-top:none;
+    padding:4px 10px;
+    font-family: Tahoma, Verdana, Arial, sans-serif;
+    font-size:11px;
+    color:#aaa;
+    margin-bottom:10px;
+}
+.newsSubBar span{ color:#ffc000; }
+/* Hardcore 2007 news list - TIGHT spacing forced */
+.newsGrid{
+    display:flex;
+    flex-direction:column;
+    gap:0;
+    border:2px outset #666;
+    background:#111;
+}
+.newsArticle{
+    background:#1a1a1a;
+    border-bottom:1px solid #333;
+    padding:5px 8px !important;
+    display:flex;
+    flex-direction:row;
+    gap:8px;
+    cursor:pointer;
+    align-items:flex-start;
+}
+.newsArticle:nth-child(even){
+    background:#151515;
+}
+.newsArticle:last-child{
+    border-bottom:none;
+}
+.newsArticle:hover{
+    background:#2a0000;
+}
+.newsImage{
+    width:110px;
+    height:72px;
+    flex-shrink:0;
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    border:2px inset #444;
+    border-radius:0;
+}
+.newsText{
+    flex:1;
+    padding-top:0;
+    font-family: Tahoma, Verdana, Arial, sans-serif;
+}
+.newsMeta{
+    font-size:8px !important;
+    color:#888;
+    margin:0 0 1px 0 !important;
+    letter-spacing:0.5px;
+    line-height:1.2 !important;
+}
+.newsMeta .cat{
+    color:#ff4444;
+    font-weight:bold;
+    text-transform:uppercase;
+}
+.newsText h2{
+    font-family: Tahoma, Verdana, Arial, sans-serif;
+    font-size:11px !important;
+    font-weight:bold;
+    letter-spacing:0;
+    text-transform:none;
+    color:#6cf;
+    text-shadow:none;
+    margin:0 0 1px 0 !important;
+    padding:0 !important;
+    line-height:1.2 !important;
+    text-decoration:underline;
+}
+.newsArticle:hover .newsText h2{
+    color:#9df;
+}
+.newsText p{
+    font-family: Tahoma, Verdana, Arial, sans-serif;
+    font-size:10px !important;
+    line-height:1.25 !important;
+    color:#ccc;
+    margin:0 0 1px 0 !important;
+    padding:0 !important;
+}
+.read-link {
+    color: #ffc000;
+    font-weight: bold;
+    text-decoration: underline;
+    margin:0 !important;
+    padding:0 !important;
+    display: inline-block;
+    font-size:9px !important;
+    font-family: Tahoma, Verdana, Arial, sans-serif;
+    line-height:1.2 !important;
+}
+.read-link:hover {
+    color: #fff;
+}
+/* FULL ARTICLE PAGE VIEW - old school 2000s style */
+.back-link {
+    color: #00aaff;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 14px;
+    font-size: 13px;
+    font-family: Tahoma, Verdana, Arial, sans-serif;
+    display: inline-block;
+    text-decoration: underline;
+}
+.back-link:hover {
+    color: #ffcc00;
+}
+.article-header-bar {
+    font-family: Tahoma, Verdana, Arial, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-align: left;
+    color: #fff;
+    text-shadow: 1px 1px 0 #000;
+    background: linear-gradient(to bottom, #9c0000, #6b0000);
+    border: 2px solid #cc0000;
+    border-bottom: 2px solid #400;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+}
+.full-article-image {
+    width: 100%;
+    height: 280px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 3px outset #666;
+    margin-bottom: 16px;
+    box-shadow: inset 0 0 8px #000;
+}
+#articleTitle {
+    font-family: Tahoma, Verdana, Arial, sans-serif;
+    font-size: 22px;
+    font-weight: bold;
+    color: #6cf;
+    margin-bottom: 8px;
+    line-height: 1.3;
+    text-decoration: underline;
+}
+.full-article-meta {
+    font-family: Tahoma, Verdana, Arial, sans-serif;
+    font-size: 11px;
+    color: #aaa;
+    margin-bottom: 16px;
+    padding: 6px 8px;
+    background: #1a1a1a;
+    border: 1px solid #444;
+    border-top: 1px solid #666;
+}
+.full-article-meta .cat {
+    color: #ff4444;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.full-article-body {
+    font-family: Tahoma, Verdana, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #ccc;
+    background: #151515;
+    border: 2px inset #444;
+    padding: 14px;
+}
+.full-article-body p {
+    margin-bottom: 12px;
+}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="top">
+    <div class="logoWrap">
+        <div class="logoImage"></div>
+        <div class="title">GAME CIRCUIT</div>
+    </div>
+    <div class="userInfo" id="userInfo"></div>
+</div>
+<div class="main">
+<div class="sidebar">
+<div class="search">
+    <input id="searchInput" placeholder="Search website or users...">
+    <button id="searchBtn">GO</button>
+</div>
+<div id="userSearchResults"></div>
+<div class="section">Dashboard</div>
+<a href="https://www.gamecircuit.co.uk/"><div class="item">Home</div></a>
+<a href="account.html"><div class="item">My Account</div></a>
+<div class="section">Gaming</div>
+<a href="call-of-duty.html"><div class="item">Call of Duty</div></a>
+<a href="Halo3.html"><div class="item">Halo</div></a>
+<a href="Minecraft.html"><div class="item">Minecraft</div></a>
+<a href="Forza.html"><div class="item">Forza</div></a>
+<a href="combo-carnage.html"><div class="item">Combo Carnage</div></a>
+<div class="more-games-toggle" id="moreGamesToggle">▼ More Games</div>
+<div class="more-games-content" id="moreGamesContent">
+    <a href="Phasmophobia.html"><div class="item">Phasmophobia</div></a>
+    <a href="Hytale.html"><div class="item">Hytale</div></a>
+    <a href="Fifa.html"><div class="item">Fifa</div></a>
+    <a href="Rocket-League.html"><div class="item">Rocket League</div></a>
+    <a href="Counter-Strike.html"><div class="item">Counter Strike</div></a>
+    <a href="Grand-Theft-Auto.html"><div class="item">Grand Theft Auto</div></a>
+</div>
+<div class="section">Community</div>
+<a href="Forums.html"><div class="item">Forums</div></a>
+<a href="ClanWars.html"><div class="item">Clan Wars</div></a>
+<a href="TopClips.html"><div class="item">Top Clips</div></a>
+<a href="twitch-arena.html"><div class="item">twitch Arena</div></a>
+<a href="champions.html"><div class="item">Champions</div></a>
+<a href="Events.html"><div class="item">Events</div></a>
+<a href="Updates.html"><div class="item">Updates</div></a>
+<div class="section">Media</div>
+<a href="news-center.html"><div class="item activePage">News</div></a>
+<a href="Highlights.html"><div class="item">Highlights</div></a>
+</div>
+<div class="content">
+<div class="contentPanel">
+<div id="newsListView">
+<div class="newsTitle">:: NEWS CENTRE ::</div>
+<div class="newsSubBar">Showing latest headlines &nbsp;|&nbsp; <span>4 stories</span> &nbsp;|&nbsp; Updated: July 2026</div>
+<div class="newsGrid">
+<div class="newsArticle" onclick="showStory(1)">
+<div class="newsImage" style="background-image:var(--news1)"></div>
+<div class="newsText">
+<div class="newsMeta"><span class="cat">[Community]</span> &nbsp; Posted: 15 Jul 2026 &nbsp;|&nbsp; By: Staff</div>
+<h2>Unite the Gamers!</h2>
+<p>Bringing back the vibes? Damn right we are, every gamer is welcome, old school, new school, casual, competitive.</p>
+<span class="read-link">&gt;&gt; Read Full Article</span>
+</div>
+</div>
+<div class="newsArticle" onclick="showStory(2)">
+<div class="newsImage" style="background-image:var(--news2)"></div>
+<div class="newsText">
+<div class="newsMeta"><span class="cat">[Competitive]</span> &nbsp; Posted: 17 Jul 2026 &nbsp;|&nbsp; By: Staff</div>
+<h2>The GameCircuit Championship is here!</h2>
+<p>The official GameCircuit Championship kicks off — Black Ops II competitive season is live.</p>
+<span class="read-link">&gt;&gt; Read Full Article</span>
+</div>
+</div>
+<div class="newsArticle" onclick="showStory(3)">
+<div class="newsImage" style="background-image:var(--news4)"></div>
+<div class="newsText">
+<div class="newsMeta"><span class="cat">[Industry]</span> &nbsp; Posted: 10 Jul 2026 &nbsp;|&nbsp; By: Staff</div>
+<h2>XBOX Is Back!</h2>
+<p>Xbox has made major moves recently.</p>
+<span class="read-link">&gt;&gt; Read Full Article</span>
+</div>
+</div>
+<div class="newsArticle" onclick="showStory(4)">
+<div class="newsImage" style="background-image:var(--news3)"></div>
+<div class="newsText">
+<div class="newsMeta"><span class="cat">[Site News]</span> &nbsp; Posted: 08 Jul 2026 &nbsp;|&nbsp; By: Staff</div>
+<h2>Hammer Gaming Supporting the Community</h2>
+<p>Hammer Gaming has taken a bold step by creating a brand new platform called Game Circuit.</p>
+<span class="read-link">&gt;&gt; Read Full Article</span>
+</div>
+</div>
+</div>
+</div>
+<div id="articleView" style="display:none;">
+    <div class="article-header-bar">:: FULL ARTICLE ::</div>
+    <div class="full-article-image" id="articleImage"></div>
+    <h1 id="articleTitle"></h1>
+    <div class="full-article-meta" id="articleMeta"></div>
+    <div class="full-article-body" id="articleBody"></div>
+    <a href="#" class="back-link" onclick="hideStory(); return false;" style="margin-top:16px;">&lt;&lt; Back to News Centre</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Story Modal (unused now, kept for compatibility) -->
+<div id="storyModal" class="modal">
+<div class="modal-content">
+    <h3 id="storyTitle" style="text-align:left;"></h3>
+    <div id="storyContent" style="text-align:left; line-height:1.7; font-size:17px; color:#f0f0f0;"></div>
+    <button onclick="closeStoryModal()" style="margin-top:25px; padding:12px 30px; background:#9c0000; color:white; border:none; border-radius:4px; cursor:pointer;">Close</button>
+</div>
+</div>
+<!-- Logout Modal -->
+<div id="logoutModal" class="modal">
+<div class="modal-content">
+<h3>Sign Out?</h3>
+<p>Are you sure you want to log out?</p>
+<div class="modal-buttons">
+<button class="modal-btn modal-yes" onclick="confirmLogout()">Yes, Log Out</button>
+<button class="modal-btn modal-no" onclick="closeModal()">Cancel</button>
+</div>
+</div>
+</div>
+<script>
+// ====================== USER SEARCH ======================
+const userSearchResults = document.getElementById("userSearchResults");
+async function searchUsers(query) {
+    userSearchResults.innerHTML = "<div style='padding:10px;color:#aaa;'>Searching users...</div>";
+    userSearchResults.style.display = "block";
+    try {
+        const url = new URL(API);
+        url.searchParams.append("action", "searchUsers");
+        url.searchParams.append("query", query);
+        const res = await fetch(url);
+        const data = await res.json();
+        if (data.success && data.users && data.users.length > 0) {
+            let html = "";
+            data.users.forEach(user => {
+                const pic = user.profilePic || "https://iili.io/CHGreKQ.png";
+                html += `
+                    <div class="userResult" onclick="window.location.href='Public-Profile.html?username=${encodeURIComponent(user.username)}'">
+                        <div class="profilePic" style="background-image: url('${pic}')"></div>
+                        <div class="userResultInfo">
+                            <div class="username">${user.username}</div>
+                            <small>Rep: ${user.reputation || 0}</small>
+                        </div>
+                    </div>
+                `;
+            });
+            userSearchResults.innerHTML = html;
+        } else {
+            userSearchResults.innerHTML = `<div style="padding:10px;color:#aaa;">No users found for "${query}"</div>`;
+        }
+    } catch (e) {
+        userSearchResults.innerHTML = `<div style="padding:10px;color:#f66;">Error searching users.</div>`;
+    }
+}
+const pageMap = {
+    "call of duty": "call-of-duty.html", "cod": "call-of-duty.html",
+    "halo": "Halo3.html",
+    "minecraft": "Minecraft.html",
+    "forza": "Forza.html",
+    "combo carnage": "combo-carnage.html", "combo": "combo-carnage.html",
+    "forums": "Forums.html",
+    "top clips": "TopClips.html", "clips": "TopClips.html",
+    "events": "Events.html",
+    "updates": "Updates.html",
+    "news": "news-center.html",
+    "highlights": "Highlights.html",
+    "home": "https://www.gamecircuit.co.uk/",
+    "account": "account.html"
+};
+function performSearch() {
+  const query = document.getElementById("searchInput").value.toLowerCase().trim();
+  if (!query) return;
+  if (pageMap[query]) {
+    window.location.href = pageMap[query];
+    return;
+  }
+  for (let key in pageMap) {
+    if (key.includes(query) || query.includes(key)) {
+      window.location.href = pageMap[key];
+      return;
+    }
+  }
+  searchUsers(query);
+}
+// ====================== FULL ARTICLE PAGE VIEW ======================
+function showStory(id) {
+  document.getElementById("newsListView").style.display = "none";
+  document.getElementById("articleView").style.display = "block";
+  const imageEl = document.getElementById("articleImage");
+  const titleEl = document.getElementById("articleTitle");
+  const metaEl = document.getElementById("articleMeta");
+  const bodyEl = document.getElementById("articleBody");
+  if (id === 1) {
+    imageEl.style.backgroundImage = "var(--news1)";
+    titleEl.textContent = "Unite the Gamers!";
+    metaEl.innerHTML = `<span class="cat">[Community]</span> &nbsp; Posted: 15 Jul 2026 &nbsp;|&nbsp; By: Staff &nbsp;|&nbsp; Time: 14:22`;
+    bodyEl.innerHTML = `
+      <p>Bringing back the vibes? Damn right we are, every gamer is welcome, old school, new school, casual, competitive.</p>
+      <p>The community spirit of the 2000s is something many of us miss dearly. Game Circuit aims to recreate that feeling with simple navigation, active forums, and spaces where players can actually connect instead of just competing. We believe gaming is better when we play together.</p>
+      <p>Whether you are here for ranked ladders, late-night pub matches, or just hanging out in the forums, you belong. Let’s rebuild what made online gaming special.</p>
+    `;
+  } else if (id === 2) {
+    imageEl.style.backgroundImage = "var(--news2)";
+    titleEl.textContent = "The GameCircuit Championship is here!";
+    metaEl.innerHTML = `<span class="cat">[Competitive]</span> &nbsp; Posted: 17 Jul 2026 &nbsp;|&nbsp; By: Staff &nbsp;|&nbsp; Time: 09:15`;
+    bodyEl.innerHTML = `
+      <p>The official GameCircuit Championship is live. Black Ops II competitive returns with the Kickoff Tournament — 16 team single elimination, free entry, and series points on the line.</p>
+      <p>Sign-ups are open now. Follow the Prestige League standings, watch matches on CircuitTV, and compete for the £50 prize pool plus 100 Series Points. The golden era of competitive Call of Duty is back on GameCircuit.</p>
+      <p>Check the Events page for brackets, rules, and registration details. See you on the server.</p>
+    `;
+  } else if (id === 3) {
+    imageEl.style.backgroundImage = "var(--news4)";
+    titleEl.textContent = "XBOX Is Back!";
+    metaEl.innerHTML = `<span class="cat">[Industry]</span> &nbsp; Posted: 10 Jul 2026 &nbsp;|&nbsp; By: Staff &nbsp;|&nbsp; Time: 18:40`;
+    bodyEl.innerHTML = `
+      <p>After a period of uncertainty, Xbox is making strong moves with new hardware updates, improved cross-platform support, and a renewed focus on community driven experiences. Gamers are excited about what’s coming next from the green team.</p>
+      <p>With better backward compatibility, enhanced cloud features, and more developer support, Xbox is positioning itself as a true home for both casual and hardcore players once again.</p>
+      <p>Expect more announcements in the coming months. The console wars just got interesting again.</p>
+    `;
+  } else if (id === 4) {
+    imageEl.style.backgroundImage = "var(--news3)";
+    titleEl.textContent = "Hammer Gaming Supporting the Community";
+    metaEl.innerHTML = `<span class="cat">[Site News]</span> &nbsp; Posted: 08 Jul 2026 &nbsp;|&nbsp; By: Staff &nbsp;|&nbsp; Time: 11:05`;
+    bodyEl.innerHTML = `
+      <p>Hammer Gaming has taken a bold step by creating a brand new platform called Game Circuit. The team behind it wants to bring back the golden era of gaming websites from the 2000s, a time when communities felt alive, personal, and full of passion.</p>
+      <p>Game Circuit aims to recreate that classic community vibe with clean forums, easy to navigate sections, and a strong focus on real player interaction. The founders believe modern gaming has lost some of its soul and they are determined to help bring it back by building a platform that puts the players first.</p>
+      <p>From casual discussions to competitive ladders, Game Circuit is here to support every type of gamer and help rebuild the connections that made online gaming so special in the past.</p>
+    `;
+  }
+  // scroll to top of content
+  window.scrollTo(0, 0);
+}
+function hideStory() {
+  document.getElementById("articleView").style.display = "none";
+  document.getElementById("newsListView").style.display = "block";
+  window.scrollTo(0, 0);
+}
+function closeStoryModal() {
+  document.getElementById("storyModal").style.display = "none";
+}
+// ====================== USER BAR ======================
+const API = "https://script.google.com/macros/s/AKfycbyIGK3GwRustf-8Rb_ijCqHRfJIc9SZ5-ny0HiA1CNG8j7AxYc07uHyfhVLc8pvbC3h/exec";
+function formatJoinDate(dateValue) {
+  if (!dateValue) return "Recently";
+  const date = new Date(Number(dateValue));
+  if (isNaN(date.getTime())) return "Recently";
+  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+async function loadUserInfo() {
+  const userInfoDiv = document.getElementById("userInfo");
+  const token = localStorage.getItem("sessionToken");
+  if (!token) {
+    userInfoDiv.innerHTML = `<div class="userBar"><div class="userDetails"><div class="userLinks"><a href="account.html">Login</a><span class="separator">|</span><a href="Register.html">Sign Up</a></div></div></div>`;
+    return;
+  }
+  userInfoDiv.innerHTML = `
+    <div class="userBar">
+      <div class="profilePic" style="background-image: url('https://iili.io/CHGreKQ.png')"></div>
+      <div class="userDetails">
+        <div class="username user-bar-username">Loading...</div>
+        <div class="userLinks"><a href="#">Please wait</a></div>
+        <div style="font-size:11.5px; color:#777; margin-top:1px;">Joined ...</div>
+      </div>
+      <div class="userIcons">
+        <img src="https://iili.io/CHGreKQ.png" alt="icon">
+      </div>
+    </div>
+  `;
+  try {
+    const url = new URL(API);
+    url.searchParams.append("action", "getProfile");
+    url.searchParams.append("sessionToken", token);
+    const res = await fetch(url);
+    const data = await res.json();
+    if (data.success && data.user) {
+      const user = data.user;
+      const pic = user.profilePic || "https://iili.io/CHGreKQ.png";
+      const joinDate = formatJoinDate(user.createdAt);
+      const rep = user.Reputation || user.reputation || 0;
+      userInfoDiv.innerHTML = `
+        <div class="userBar">
+          <div class="profilePic" style="background-image: url('${pic}')"></div>
+          <div class="userDetails">
+            <div class="username user-bar-username">${user.username || "DaYz"}</div>
+            <div style="font-size:11.5px; color:#777; margin-top:1px;">Joined ${joinDate}</div>
+            <div style="font-size:11.5px; color:#ffd700;">Rep: <strong>${rep}</strong></div>
+            <div class="userLinks">
+              <a href="my-profile.html">My Profile</a>
+              <span class="separator">|</span>
+              <a href="#" onclick="showLogoutModal(); return false;">Log Out</a>
+            </div>
+          </div>
+          <div class="userIcons">
+            <img src="https://iili.io/CHGreKQ.png" alt="icon">
+          </div>
+        </div>
+      `;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+function showLogoutModal() {
+  document.getElementById("logoutModal").style.display = "flex";
+}
+function closeModal() {
+  document.getElementById("logoutModal").style.display = "none";
+}
+function confirmLogout() {
+  closeModal();
+  localStorage.removeItem("sessionToken");
+  location.reload();
+}
+// Initialize
+document.addEventListener("DOMContentLoaded", () => {
+    loadUserInfo();
+    const searchInput = document.getElementById("searchInput");
+    const searchBtn = document.getElementById("searchBtn");
+    searchBtn.addEventListener("click", performSearch);
+    searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") performSearch();
+    });
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest('.search') && !e.target.closest('#userSearchResults')) {
+            userSearchResults.style.display = "none";
+        }
+    });
+    // More Games Toggle
+    document.getElementById("moreGamesToggle").addEventListener("click", function() {
+        const content = document.getElementById("moreGamesContent");
+        const toggle = document.getElementById("moreGamesToggle");
+        if (content.style.display === "block") {
+            content.style.display = "none";
+            toggle.innerHTML = "▼ More Games";
+        } else {
+            content.style.display = "block";
+            toggle.innerHTML = "▲ Less Games";
+        }
+    });
+});
+</script>
+</body>
+</html>
